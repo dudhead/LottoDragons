@@ -1,0 +1,8 @@
+D:\final lotto dragons\project\lottery\lottery\bin\x64\Debug\LottoDragons-TrueAlignment.exe
+D:\final lotto dragons\project\lottery\lottery\bin\x64\Debug\LottoDragons-TrueAlignment.pdb
+D:\final lotto dragons\project\lottery\lottery\obj\x64\Debug\ResolveAssemblyReference.cache
+D:\final lotto dragons\project\lottery\lottery\obj\x64\Debug\lottery.Form1.resources
+D:\final lotto dragons\project\lottery\lottery\obj\x64\Debug\lottery.Properties.Resources.resources
+D:\final lotto dragons\project\lottery\lottery\obj\x64\Debug\LotteryDragons.csproj.GenerateResource.Cache
+D:\final lotto dragons\project\lottery\lottery\obj\x64\Debug\LottoDragons-TrueAlignment.exe
+D:\final lotto dragons\project\lottery\lottery\obj\x64\Debug\LottoDragons-TrueAlignment.pdb

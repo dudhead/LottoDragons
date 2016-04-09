@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotteryDragons", "lottery\LotteryDragons.csproj", "{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Lotto Dragons True Alignment", "winner\winner.vdproj", "{2DFE628B-BB83-43B5-A356-6D3245543FDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Debug|x64.ActiveCfg = Debug|x64
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Debug|x64.Build.0 = Debug|x64
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Debug|x86.ActiveCfg = Release|x86
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Debug|x86.Build.0 = Release|x86
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Release|x64.ActiveCfg = Release|x64
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Release|x64.Build.0 = Release|x64
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Release|x86.ActiveCfg = Release|x86
+		{CC48857D-C9DF-4A13-B09E-AF2AF3E6FA45}.Release|x86.Build.0 = Release|x86
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Debug|Any CPU.ActiveCfg = Debug
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Debug|x64.ActiveCfg = Debug
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Debug|x64.Build.0 = Debug
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Debug|x86.ActiveCfg = Release
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Release|Any CPU.ActiveCfg = Release
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Release|Any CPU.Build.0 = Release
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Release|x64.ActiveCfg = Release
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Release|x64.Build.0 = Release
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Release|x86.ActiveCfg = Release
+		{2DFE628B-BB83-43B5-A356-6D3245543FDE}.Release|x86.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
