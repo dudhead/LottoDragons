@@ -1,9 +1,0 @@
-E:\24-05-12\project\lottery\lottery\bin\Release\lottery.exe
-E:\24-05-12\project\lottery\lottery\bin\Release\lottery.pdb
-E:\24-05-12\project\lottery\lottery\obj\Release\ResolveAssemblyReference.cache
-E:\24-05-12\project\lottery\lottery\obj\Release\lottery.Form1.resources
-E:\24-05-12\project\lottery\lottery\obj\Release\lottery.pick4.resources
-E:\24-05-12\project\lottery\lottery\obj\Release\lottery.Properties.Resources.resources
-E:\24-05-12\project\lottery\lottery\obj\Release\lottery.csproj.GenerateResource.Cache
-E:\24-05-12\project\lottery\lottery\obj\Release\lottery.exe
-E:\24-05-12\project\lottery\lottery\obj\Release\lottery.pdb
