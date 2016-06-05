@@ -19,18 +19,19 @@ namespace lottery
         ListBox lb = new ListBox();
         Boolean debug = false;
         OleDbConnection conn =null;
-       
+        String realDBPath = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Application.StartupPath + "\\lottery.accdb;Persist Security Info=False;";
+        String debugDBPath = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Karthik\\Documents\\LottoDragons\\lottery.accdb;Persist Security Info=False;";
         private StringReader myReader;
 
         public Form1()
         {
             if (debug)
             {
-                conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Karthik\\Documents\\LottoDragons\\lottery.accdb;Persist Security Info=False;");
+                conn = new OleDbConnection(debugDBPath);
             }
             else
             {
-                conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetParent(Directory.GetParent(Application.StartupPath).ToString()) + "\\Common Files\\Lotto\\lottery.accdb;Persist Security Info=False;");
+                conn = new OleDbConnection(realDBPath);
             }
             InitializeComponent();
         }
