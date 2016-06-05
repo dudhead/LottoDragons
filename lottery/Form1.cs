@@ -983,9 +983,10 @@ namespace lottery
                             array[count, 2] = Convert.ToInt32(dr[5]);
                             array[count, 3] = Convert.ToInt32(dr[6]);
                             array[count, 4] = Convert.ToInt32(dr[7]);
-                            count++;
-                            max = Convert.ToInt32(dr[1]);
+                            int currentMaxValue = Convert.ToInt32(dr[1]);
 
+                            count++;
+                            max = (max < currentMaxValue) ? currentMaxValue : max;
                         }
 
                         if (count > 8)
@@ -1003,7 +1004,7 @@ namespace lottery
                                 }
                             }
 
-                            if (check(temp, maxarray) <= max_ele)
+                            if (check(temp, maxarray) < max_ele)
                             {
                                 int[] eliarray = new int[maxarray];
                                 int[] hvn = new int[count];
@@ -1125,8 +1126,10 @@ namespace lottery
                                     listBox2.Items.Add(neutral[i].ToString());
                                 }
                             }
-
-
+                            else
+                            {
+                                error_lbl.Text = "Not enough values to calculate please insert and try again";
+                            }
                         }
                         else
                         {
