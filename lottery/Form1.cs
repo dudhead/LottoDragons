@@ -7,7 +7,6 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
-//using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -18,12 +17,21 @@ namespace lottery
     public partial class Form1 : Form
     {
         ListBox lb = new ListBox();
-
-        OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetParent(Directory.GetParent(Application.StartupPath).ToString()) + "\\Common Files\\Lotto\\lottery.accdb;Persist Security Info=False;");
+        Boolean debug = false;
+        OleDbConnection conn =null;
+       
         private StringReader myReader;
 
         public Form1()
         {
+            if (debug)
+            {
+                conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Karthik\\Documents\\LottoDragons\\lottery.accdb;Persist Security Info=False;");
+            }
+            else
+            {
+                conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetParent(Directory.GetParent(Application.StartupPath).ToString()) + "\\Common Files\\Lotto\\lottery.accdb;Persist Security Info=False;");
+            }
             InitializeComponent();
         }
 
@@ -62,9 +70,9 @@ namespace lottery
                         z = int.Parse(max_num_txt.Text);
 
 
-                        if (Convert.ToInt32(max_num_txt.Text) < 20)
+                        if (Convert.ToInt32(max_num_txt.Text) < 15)
                         {
-                            errorProvider1.SetError(max_num_txt, "minimum number should be 20");
+                            errorProvider1.SetError(max_num_txt, "minimum number should be 15");
                             flag = 1;
                         }
                     }
@@ -984,7 +992,7 @@ namespace lottery
                             array[count, 3] = Convert.ToInt32(dr[6]);
                             array[count, 4] = Convert.ToInt32(dr[7]);
                             int currentMaxValue = Convert.ToInt32(dr[1]);
-
+                         
                             count++;
                             max = (max < currentMaxValue) ? currentMaxValue : max;
                         }
