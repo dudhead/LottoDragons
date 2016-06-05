@@ -14,33 +14,26 @@ using Microsoft.Win32;
 
 namespace lottery
 {
-     
+
     public partial class Form1 : Form
     {
         ListBox lb = new ListBox();
 
         OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetParent(Directory.GetParent(Application.StartupPath).ToString()) + "\\Common Files\\Lotto\\lottery.accdb;Persist Security Info=False;");
         private StringReader myReader;
-        //int[,] a = new int[9, 4];+Directory.GetParent(Directory.GetParent(Application.StartupPath).ToString())+"\\Common Files\\Lotto\\lottery.accdb
-        //int[,] b = new int[9, 4];E:\\24-05-12\\project\\lottery.accdb
-        //int[,] c = new int[10, 4];E:\\24-05-12\\project\\
-        //int[,] eli = new int[4, 8];E:\\24-05-12\\project\\lottery\\lottery\\data
-        //int[,] ret = new int[4, 8];C:\\Program Files (x86)\\LottoDragons\\LottoDragons-True alignment\\
-        //int[,] neu = new int[4, 8];E:\\24-05-12\\project\\lottery\\lottery\\data         E:\\abhi\\24-05-12\\project\\lottery.accdb
-        //
 
         public Form1()
         {
             InitializeComponent();
         }
-        
+
         private int validateData()
         {
             int flag = 0;
 
             errorProvider1.Clear();
 
-            if (draw_time.SelectedIndex==-1) 
+            if (draw_time.SelectedIndex == -1)
             {
                 errorProvider1.SetError(draw_time, "Please select the draw time  !");
                 flag = 1;
@@ -153,10 +146,10 @@ namespace lottery
 
                 }
             }
-                    
-        
 
-            
+
+
+
             if (pick4_radbtn.Checked == true)
             {
                 if (res_tbx.Text == "")
@@ -188,52 +181,37 @@ namespace lottery
         }
         public void IsAccess2007Installed()
         {
-            //RegistryKey rootKey = Registry.ClassesRoot.OpenSubKey(@"Access.Application.12\shell\open\command", false);
-
-            //return rootKey != null;
-
             RegistryKey rootKey = Registry.ClassesRoot.OpenSubKey(@"Access.Application\CurVer", false);
 
             if (rootKey == null)
             {
-                string path=Application.StartupPath.ToString()+""+"\\AccessRuntime.exe";
+                string path = Application.StartupPath.ToString() + "" + "\\AccessRuntime.exe";
                 MessageBox.Show("No access Installed in your system please install the application and try again");
-                
-                FileInfo fi=new FileInfo(path);
+
+                FileInfo fi = new FileInfo(path);
 
                 System.Diagnostics.ProcessStartInfo proinfo = new System.Diagnostics.ProcessStartInfo(path);
                 proinfo.WorkingDirectory = fi.DirectoryName;
-                    System.Diagnostics.Process pro = new System.Diagnostics.Process();
-                    pro.StartInfo = proinfo;
-                    pro.Start();
-                    Application.Exit();
+                System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                pro.StartInfo = proinfo;
+                pro.Start();
+                Application.Exit();
             }
-            //else
-            //{
-            //    string value = rootKey.GetValue("").ToString();
-
-            //    int verNum = int.Parse(value.Substring(19, 2));
-            //    if (value.StartsWith("Access.Application.") && verNum == 12)
-            //    { MessageBox.Show("access 2007"); }
-            //    else
-            //        MessageBox.Show("access 2010 and above");
-            //}
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             IsAccess2007Installed();
-            
+
             results_lbl.Visible = false;
             conn.Close();
-            
-            
+
+
             try
             {
                 conn.Open();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 error_lbl.Text = ex.Message;
             }
@@ -248,125 +226,120 @@ namespace lottery
             conn.Close();
             try
             {
-               
+
                 if (validateData() == 0)
                 {
                     conn.Open();
 
-                if (pick3_radbtn.Checked == true || pick4_radbtn.Checked == true)
-                {
-                    OleDbCommand com = new OleDbCommand("select * from data_entry where (date_in=DateValue(@date) and type=@pick) and draw=@drawtime", conn);
-
-
-                    OleDbCommand cmd = new OleDbCommand("insert into data_entry values(@date,@pick,@result,@drawtime)", conn);
-                    OleDbParameter param = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
-                    OleDbParameter param1 = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
-                    //OleDbParameter param1 = new OleDbParameter("@pick", pick4_radbtn.Text.ToString());
-                    cmd.Parameters.Add(param);
-                    com.Parameters.Add(param1);
-
-                    if (pick3_radbtn.Checked)
+                    if (pick3_radbtn.Checked == true || pick4_radbtn.Checked == true)
                     {
-                        param = new OleDbParameter("@pick", pick3_radbtn.Text);
-                        param1 = new OleDbParameter("@pick", pick3_radbtn.Text.ToString());
+                        OleDbCommand com = new OleDbCommand("select * from data_entry where (date_in=DateValue(@date) and type=@pick) and draw=@drawtime", conn);
+
+
+                        OleDbCommand cmd = new OleDbCommand("insert into data_entry values(@date,@pick,@result,@drawtime)", conn);
+                        OleDbParameter param = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
+                        OleDbParameter param1 = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
                         cmd.Parameters.Add(param);
                         com.Parameters.Add(param1);
-                    }
-                    else
-                        if (pick4_radbtn.Checked)
+
+                        if (pick3_radbtn.Checked)
                         {
-                            param = new OleDbParameter("@pick", pick4_radbtn.Text);
-                            param1 = new OleDbParameter("@pick", pick4_radbtn.Text.ToString());
+                            param = new OleDbParameter("@pick", pick3_radbtn.Text);
+                            param1 = new OleDbParameter("@pick", pick3_radbtn.Text.ToString());
                             cmd.Parameters.Add(param);
                             com.Parameters.Add(param1);
                         }
-                    param = new OleDbParameter("@result", res_tbx.Text);
-                    //param1 = new OleDbParameter("@result", res_tbx.Text);
-                    cmd.Parameters.Add(param);
-                    //com.Parameters.Add(param1);
+                        else
+                            if (pick4_radbtn.Checked)
+                            {
+                                param = new OleDbParameter("@pick", pick4_radbtn.Text);
+                                param1 = new OleDbParameter("@pick", pick4_radbtn.Text.ToString());
+                                cmd.Parameters.Add(param);
+                                com.Parameters.Add(param1);
+                            }
+                        param = new OleDbParameter("@result", res_tbx.Text);
+                        cmd.Parameters.Add(param);
 
-                    param = new OleDbParameter("@drawtime", draw_time.Text);
-                    param1 = new OleDbParameter("@drawtime", draw_time.Text.ToString());
-                    cmd.Parameters.Add(param);
-                    com.Parameters.Add(param1);
-                    OleDbDataReader df = com.ExecuteReader();
-                    
-                    int lount = 0;
-                    while (df.Read())
-                    {
-                        lount++;
-                    }
-                    df.Close();
+                        param = new OleDbParameter("@drawtime", draw_time.Text);
+                        param1 = new OleDbParameter("@drawtime", draw_time.Text.ToString());
+                        cmd.Parameters.Add(param);
+                        com.Parameters.Add(param1);
+                        OleDbDataReader df = com.ExecuteReader();
 
-                    if (lount>0)
-                    {
-                        MessageBox.Show("Data for this date is already entered.  Please check and try again");
+                        int lount = 0;
+                        while (df.Read())
+                        {
+                            lount++;
+                        }
+                        df.Close();
 
+                        if (lount > 0)
+                        {
+                            MessageBox.Show("Data for this date is already entered.  Please check and try again");
+                        }
+                        else
+                        {
 
+                            int rom = cmd.ExecuteNonQuery();
+                            if (rom > 0)
+                            {
+                                res_tbx.Text = "";
+                                error_lbl.Text = "INSERTED";
+                                res_tbx.Focus();
+                            }
+
+                        }
                     }
                     else
                     {
+                        OleDbCommand com1 = new OleDbCommand("select * from data_entry2 where date_in=DateValue(@date)", conn);
+                        OleDbCommand cmd = new OleDbCommand("insert into data_entry2 values(@date,@max_value,@draw,@col1,@col2,@col3,@col4,@col5)", conn);
+                        OleDbParameter param = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
+                        OleDbParameter param3 = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
+                        cmd.Parameters.Add(param);
+                        com1.Parameters.Add(param3);
+                        param = new OleDbParameter("@max_value", Convert.ToInt32(max_num_txt.Text));
+                        cmd.Parameters.Add(param);
+                        param = new OleDbParameter("@draw", draw_time.Text);
+                        cmd.Parameters.Add(param);
+                        param = new OleDbParameter("col1", Convert.ToInt32(col1_txt.Text));
+                        cmd.Parameters.Add(param);
+                        param = new OleDbParameter("col2", Convert.ToInt32(col2_txt.Text));
+                        cmd.Parameters.Add(param);
 
-                        int rom = cmd.ExecuteNonQuery();
-                        if (rom > 0)
+                        param = new OleDbParameter("col3", Convert.ToInt32(col3_txt.Text));
+                        cmd.Parameters.Add(param);
+
+                        param = new OleDbParameter("col4", Convert.ToInt32(col4_txt.Text));
+                        cmd.Parameters.Add(param);
+
+                        param = new OleDbParameter("col5", Convert.ToInt32(col5_txt.Text));
+                        cmd.Parameters.Add(param);
+                        OleDbDataReader dd = com1.ExecuteReader();
+                        if (dd.HasRows)
                         {
-                            res_tbx.Text = "";
-                            error_lbl.Text = "INSERTED";
-                            res_tbx.Focus();
+                            MessageBox.Show("Data for this date is already entered.  Please check and try again");
                         }
-
-                    }
-                }
-                else
-                {
-                    OleDbCommand com1 = new OleDbCommand("select * from data_entry2 where date_in=DateValue(@date)", conn);
-                    OleDbCommand cmd = new OleDbCommand("insert into data_entry2 values(@date,@max_value,@draw,@col1,@col2,@col3,@col4,@col5)", conn);
-                    OleDbParameter param = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
-                    OleDbParameter param3 = new OleDbParameter("@date", dateTimePicker1.SelectionStart.Date.ToShortDateString());
-                    cmd.Parameters.Add(param);
-                    com1.Parameters.Add(param3);
-                    param = new OleDbParameter("@max_value", Convert.ToInt32(max_num_txt.Text));
-                    cmd.Parameters.Add(param);
-                    param = new OleDbParameter("@draw", draw_time.Text);
-                    cmd.Parameters.Add(param);
-                    param = new OleDbParameter("col1", Convert.ToInt32(col1_txt.Text));
-                    cmd.Parameters.Add(param);
-                    param = new OleDbParameter("col2", Convert.ToInt32(col2_txt.Text));
-                    cmd.Parameters.Add(param);
-
-                    param = new OleDbParameter("col3", Convert.ToInt32(col3_txt.Text));
-                    cmd.Parameters.Add(param);
-
-                    param = new OleDbParameter("col4", Convert.ToInt32(col4_txt.Text));
-                    cmd.Parameters.Add(param);
-
-                    param = new OleDbParameter("col5", Convert.ToInt32(col5_txt.Text));
-                    cmd.Parameters.Add(param);
-                    OleDbDataReader dd = com1.ExecuteReader();
-                    if (dd.HasRows)
-                    {
-                        MessageBox.Show("Data for this date is already entered.  Please check and try again");
-                    }
-                    else
-                    {
-
-                        int rom = cmd.ExecuteNonQuery();
-
-                        if (rom > 0)
+                        else
                         {
-                            res_tbx.Text = "";
-                            error_lbl.Text = "INSERTED";
-                            col1_txt.Clear();
-                            col2_txt.Clear();
-                            col3_txt.Clear();
-                            col4_txt.Clear();
-                            col5_txt.Clear();
+
+                            int rom = cmd.ExecuteNonQuery();
+
+                            if (rom > 0)
+                            {
+                                res_tbx.Text = "";
+                                error_lbl.Text = "INSERTED";
+                                col1_txt.Clear();
+                                col2_txt.Clear();
+                                col3_txt.Clear();
+                                col4_txt.Clear();
+                                col5_txt.Clear();
+                            }
                         }
                     }
-                }
                 }
             }
-            
+
             finally
             {
                 conn.Close();
@@ -386,13 +359,10 @@ namespace lottery
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBox2.SelectedIndex = comboBox1.SelectedIndex;
-            //pick3radio.Checked = true;
             listBox1.Items.Clear();
             dataGridView3.Columns.Clear();
             dataGridView3.ClearSelection();
             listBox2.Items.Clear();
-            //comboBox1.SelectedIndex = -1;
-            //comboBox2.SelectedIndex = -1;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -411,7 +381,6 @@ namespace lottery
                     OleDbCommand cmd1 = new OleDbCommand("SELECT * FROM data_entry WHERE (draw=@drawtype1 or draw=@drawtype) and type=@pick  ORDER BY date_in DESC;", conn);
                     OleDbCommand cmd2 = new OleDbCommand("SELECT date_in,data,draw FROM data_entry WHERE (draw=@drawtype1 or draw=@drawtype) and type=@pick  ORDER BY date_in DESC;", conn);
 
-                    // OleDbParameter para = new OleDbParameter("@drawtype",comboBox1.Text);
                     cmd1.Parameters.Add(new OleDbParameter("@drawtype", comboBox1.Text.ToString()));
                     cmd1.Parameters.Add(new OleDbParameter("@drawtype1", comboBox2.Text.ToString()));
                     cmd2.Parameters.Add(new OleDbParameter("@drawtype", comboBox1.Text.ToString()));
@@ -788,7 +757,6 @@ namespace lottery
                                         }
                                     }
                                 }
-                                //}
                             }
                             results_lbl.Visible = true;
                             int hvnkount = 0, neukount = 0;
@@ -1000,17 +968,13 @@ namespace lottery
                         dataGridView3.Columns.Add(dr4.GetName(0), dr4.GetName(0));
                         dataGridView3.Columns.Add(dr4.GetName(1), dr4.GetName(1));
                         dataGridView3.Columns.Add(dr4.GetName(2), " NUMBERS");
-                        //dataGridView3.Columns.Add(dr4.GetName(3), dr4.GetName(3));
-                        //dataGridView3.Columns.Add(dr4.GetName(4), dr4.GetName(4));
-                        //dataGridView3.Columns.Add(dr4.GetName(5), dr4.GetName(5));
-                        //dataGridView3.Columns.Add(dr4.GetName(6), dr4.GetName(6));
 
                         while (dr4.Read())
                         {
                             string dd = dr4[0].ToString().Substring(0, 11);
                             string ddd = dr4[2] + " - " + dr4[3] + " - " + dr4[4] + " - " + dr4[5] + " - " + dr4[6];
                             dataGridView3.Rows.Add(dd, dr4[1], ddd);
-                        }//dr4[2], dr4[3], dr4[4], dr4[5], dr4[6]
+                        }
                         dr4.Close();
                         while (dr.Read())
                         {
@@ -1031,7 +995,6 @@ namespace lottery
                             int[] temp = new int[maxarray];
                             Array.Clear(temp, 0, maxarray);
                             int max_ele = max * 1 / 3;
-                            //error_lbl.Text = "LOL";
                             for (int i = 3; check(temp, maxarray) > max_ele && i < count; i++)
                             {
                                 for (int j = 0; j < 5; j++)
@@ -1042,7 +1005,6 @@ namespace lottery
 
                             if (count <= max_ele)
                             {
-                                //error_lbl.Text = "LOL3";
                                 int[] eliarray = new int[maxarray];
                                 int[] hvn = new int[count];
                                 int[] neutral = new int[count];
@@ -1126,7 +1088,6 @@ namespace lottery
                                 {
                                     error_lbl.Text = "8 CONSECUTIVE GAMES";
                                 }
-                                //test1.Text = temp[42].ToString();
                                 string res = "";
                                 for (int i = 0; tom[i] != 0; i++)
                                 {
@@ -1183,20 +1144,20 @@ namespace lottery
                 conn.Close();
             }
         }
-            
-public int check(int[] temp,int max)
-            {
-                int elecount1=0;
 
-                for(int i=1;i<max;i++)
-                        {
-                            if(temp[i]==0)
-                            {
-                               elecount1++;
-                            }
-                        }
-                return elecount1;
+        public int check(int[] temp, int max)
+        {
+            int elecount1 = 0;
+
+            for (int i = 1; i < max; i++)
+            {
+                if (temp[i] == 0)
+                {
+                    elecount1++;
+                }
             }
+            return elecount1;
+        }
 
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -1215,7 +1176,7 @@ public int check(int[] temp,int max)
         private void pick5_radbtn_CheckedChanged(object sender, EventArgs e)
         {
             max_num_txt.Enabled = true;
-            col1_txt.Enabled =true ;
+            col1_txt.Enabled = true;
             col2_txt.Enabled = true;
             col3_txt.Enabled = true;
             col4_txt.Enabled = true;
@@ -1239,7 +1200,7 @@ public int check(int[] temp,int max)
             res_tbx.Clear();
             res_tbx.Visible = true;
             res_tbx.Focus();
-            groupBox2.Visible =false;
+            groupBox2.Visible = false;
             max_num_txt.Enabled = false;
             col1_txt.Enabled = false;
             col2_txt.Enabled = false;
@@ -1271,7 +1232,7 @@ public int check(int[] temp,int max)
             if (draw_time.Items.Count != 2)
             {
                 draw_time.Items.Add("mid day");
-                
+
             }
         }
 
@@ -1343,12 +1304,12 @@ public int check(int[] temp,int max)
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-           
+
         }
 
 
@@ -1371,63 +1332,63 @@ public int check(int[] temp,int max)
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs ev)
         {
-            
-      float linesPerPage = 0;
-      float yPosition = 0;
-      int count = 0;
-      float leftMargin = ev.MarginBounds.Left;
-      float topMargin = ev.MarginBounds.Top;
-      string line = null;
-     Font printFont = this.listBox1.Font;
-    SolidBrush myBrush = new SolidBrush(Color.Black);
- 
-    // Work out the number of lines per page, using the MarginBounds.
-     linesPerPage =
-         ev.MarginBounds.Height / printFont.GetHeight(ev.Graphics);
- 
-     // Iterate over the string using the StringReader, printing each line.
-      while (count < linesPerPage && ((line = myReader.ReadLine()) != null))
-     {
-         // calculate the next line position based on
-         // the height of the font according to the printing device
-          yPosition = topMargin + (count * printFont.GetHeight(ev.Graphics));
 
-         // draw the next line in the rich edit control
-  
-         ev.Graphics.DrawString(line, printFont,
-                               myBrush, leftMargin,
-                                yPosition, new StringFormat());
-        count++;
-     }
- 
-     // If there are more lines, print another page.
-     if (line != null)
-         ev.HasMorePages = true;
-     else
-         ev.HasMorePages = false;
- 
-     myBrush.Dispose();
- }
+            float linesPerPage = 0;
+            float yPosition = 0;
+            int count = 0;
+            float leftMargin = ev.MarginBounds.Left;
+            float topMargin = ev.MarginBounds.Top;
+            string line = null;
+            Font printFont = this.listBox1.Font;
+            SolidBrush myBrush = new SolidBrush(Color.Black);
+
+            // Work out the number of lines per page, using the MarginBounds.
+            linesPerPage =
+                ev.MarginBounds.Height / printFont.GetHeight(ev.Graphics);
+
+            // Iterate over the string using the StringReader, printing each line.
+            while (count < linesPerPage && ((line = myReader.ReadLine()) != null))
+            {
+                // calculate the next line position based on
+                // the height of the font according to the printing device
+                yPosition = topMargin + (count * printFont.GetHeight(ev.Graphics));
+
+                // draw the next line in the rich edit control
+
+                ev.Graphics.DrawString(line, printFont,
+                                      myBrush, leftMargin,
+                                       yPosition, new StringFormat());
+                count++;
+            }
+
+            // If there are more lines, print another page.
+            if (line != null)
+                ev.HasMorePages = true;
+            else
+                ev.HasMorePages = false;
+
+            myBrush.Dispose();
+        }
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-             printDialog1.Document = printDocument1;
-      string strText = "BEST COMBINATIONS \n";
-      foreach (object x in listBox1.Items)
-      {
-          strText = strText + x.ToString() + "\n";
-      }
-      strText = strText + "\n\n";
-      foreach (object x in listBox2.Items)
-      {
-          strText = strText + x.ToString() + "\n";
-      }
-      
-     myReader = new StringReader(strText);
-    if (printDialog1.ShowDialog() == DialogResult.OK)
-     {
-         this.printDocument1.Print();
-     }
+            printDialog1.Document = printDocument1;
+            string strText = "BEST COMBINATIONS \n";
+            foreach (object x in listBox1.Items)
+            {
+                strText = strText + x.ToString() + "\n";
+            }
+            strText = strText + "\n\n";
+            foreach (object x in listBox2.Items)
+            {
+                strText = strText + x.ToString() + "\n";
+            }
+
+            myReader = new StringReader(strText);
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                this.printDocument1.Print();
+            }
         }
 
         private void tabPage2_Click(object sender, EventArgs e)
@@ -1440,7 +1401,7 @@ public int check(int[] temp,int max)
             listBox2.Items.Clear();
             comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
-            
+
         }
 
         private void pick5radio_CheckedChanged(object sender, EventArgs e)
@@ -1457,7 +1418,7 @@ public int check(int[] temp,int max)
             comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
             error_lbl.Text = "";
-            
+
         }
 
         private void pick4radio_CheckedChanged(object sender, EventArgs e)
@@ -1483,11 +1444,11 @@ public int check(int[] temp,int max)
 
         private void dateTimePicker1_DateChanged(object sender, DateRangeEventArgs e)
         {
-           
-            if(System.DateTime.Compare(dateTimePicker1.SelectionStart.Date,DateTime.Now)>0)
+
+            if (System.DateTime.Compare(dateTimePicker1.SelectionStart.Date, DateTime.Now) > 0)
             {
 
-MessageBox.Show("Invalid date selected");
+                MessageBox.Show("Invalid date selected");
             }
         }
 
@@ -1498,196 +1459,7 @@ MessageBox.Show("Invalid date selected");
             dataGridView3.ClearSelection();
             listBox2.Items.Clear();
         }
-    
-    
-        }
+
+
     }
-
-//for (int i = 0; tom[i] != 0; i++)
-//{
-
-//    for (int j = 0; j < (total - 4); j++)
-//    {res = tom[i].ToString();
-//        for (int k = i + 1, pount = 0; pount < 4; k++, pount++)
-//        {
-//            if (tom[k] == 0 && i == 0)
-//                k = 0;
-//            res = res + " " + tom[k].ToString();
-//        }
-
-//    }
-//    listBox1.Items.Add(res);
-//}
-//error_lbl.Text = "LOL";
-            // count = check(temp, maxarray);
-//for (int j = 0; j < pick3; j++)
-                                    //{
-                                    //int[] hvnkountarray = new int[pick3];
-                            //int method3 = 0;
-
-                            //for(int i=0;i<pick3;i++)
-                            //{
-                            //    int hvnkount = 0;
-                            //    for(int j=0;j<8;j++)
-                            //    {
-                            //        if(eli[i,j]==-1)
-                            //        {
-                            //            break;
-                            //        }
-                            //        hvnkount++;
-                            //    }
-                            //    hvnkountarray[i] = hvnkount;
-                            //    if (hvnkount >= 2)
-                            //    {
-                            //        method3++;
-                            //    }
-                            //}
-                            //                    for (int j = 0; j < pick3; j++)
-                            //                    {
-                            //                        for (int i = 0; i < pick3; i++)
-                            //                        {
-                            //test1.Text = neu[j,i].ToString();
-                            //                        }
-                            //                    }
-                            //foreach (int s1 in array1)
-                            //{
-                            //    foreach (int s2 in array2)
-                            //    {
-                            //        foreach (int s3 in array3)
-                            //        {
-                            //            foreach (int s4 in array4)
-                            //            {
-                            //                String result = s1.ToString() + " " + s2.ToString() + " " + s3.ToString() + " " + s4.ToString();
-                            //                //do something with the result
-                            //            }
-                            //        }
-                            //    }
-                            //}
-                        //for (int i = 3; i < 8; i++)
-                        //{
-                        //    for (int j = 0; j < 5; j++)
-                        //    {
-                        //        temp[array[i, j]] = 1;
-                        //    }
-                        //}
-                        //count = check(temp,maxarray);
-                        //if (count > max_ele)
-                        //{
-                        //    error_lbl.Text = "LOL1";
-                        //    for (int i = 8; i < 10; i++)
-                        //    {
-                        //        for (int j = 0; j < 5; j++)
-                        //        {
-                        //            temp[array[i, j]] = 1;
-                        //        }
-                        //    }
-                        //}
-                        //count = check(temp,maxarray);
-
-                        // if (count > max_ele)
-                        //{
-                        //    error_lbl.Text = "LOL2";
-                        //    for (int i = 10; i < 11; i++)
-                        //    {
-                        //        for (int j = 0; j < 5; j++)
-                        //        {
-                        //            temp[array[i, j]] = 1;
-                        //        }
-                        //    }
-                        //}
-                        //count = check(temp,maxarray);
-//if ((Convert.ToInt32( )) > (Convert.ToInt32( dateTimePicker1.TodayDate.)))
-//{
-
-//}
-//test1.Text = tom.Length.ToString();
-
-//foreach (int o in tom)
-//{
-//    foreach (int f in tom)
-//    {
-//        foreach (int g in tom)
-//        {
-//            foreach (int h in tom)
-//            {
-//                foreach (int n in tom)
-//                {
-//                    string res = o.ToString() + " " + f.ToString() + " " + g.ToString() + " " + h.ToString() + " " + n.ToString();
-//                    listBox1.Items.Add(res);
-//                }
-//            }
-//        }
-//    }
-//}
-//string str="insert into data_entry2 values(@date,@max_value,@draw,@col1,@col2,@col3,@col4,@col5)";
-//dateTimePicker1.MaxDate = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-
-//if ((dateTimePicker1.SelectionStart.Date.ToShortDateString()) > dateTimePicker1.TodayDate.ToShortDateString())
-//{
-//    MessageBox.Show("xyz");
-//}
-//error_lbl.Text = "everything correct";
-//error_lbl.Text="ADDED";
-//int a1 = Convert.ToInt32(arr[5].Substring(0, 1));
-
-//test.Text = a.ToString();
-//count=0;
-//for (int i = 0; tom[i] != 0; i++)
-//{
-//    for (int j = i + 1; tom[j] != 0; j++)
-//    {
-//        for (int k = j + 1; tom[k] != 0; k++)
-//        {
-//            for (int l = k + 1; tom[l] != 0; l++)
-//            {
-//                for (int m = l + 1; tom[m] != 0; m++)
-//                {
-//                    string res = tom[i].ToString() + " " + tom[j].ToString() + " " + tom[k].ToString() + " " + tom[l].ToString() + " " + tom[m].ToString();
-//                    listBox1.Items.Add(res);
-//                }
-//            }
-//        }
-//    }
-//}
-//public static void Permute<T>(T[] items, Action<T[]> output)
-//{
-//    Permute(items, 0, new T[items.Length], new bool[items.Length], output);
-//}
-
-//private static void Permute<T>(T[] items, int item, T[] permutation, bool[] used, Action<T[]> output)
-//{
-//    for (int i = 0; i < items.Length; ++i)
-//    {
-//        if (!used[i])
-//        {
-//            used[i] = true;
-//            permutation[item] = items[i];
-
-//            if (item < (items.Length - 1))
-//            {
-//                Permute(items, item + 1, permutation, used, output);
-//            }
-//            else
-//            {
-//                output(permutation);
-//            }
-
-//            used[i] = false;
-//        }
-//    }
-//}
-//private static void Output<T>(T[] permutation)
-//{
-//    Form1 f = new Form1();
-//    foreach (T item in permutation)
-//    {
-//        //Console.Write(item);
-//        //Console.Write(" ");
-//        //Form1 f = new Form1();
-//        f.listBox1.Items.Add(item);
-//        //f.Show();
-
-//    }
-
-
-//} 
+}
