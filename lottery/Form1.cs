@@ -1003,7 +1003,7 @@ namespace lottery
                                 }
                             }
 
-                            if (count <= max_ele)
+                            if (check(temp, maxarray) <= max_ele)
                             {
                                 int[] eliarray = new int[maxarray];
                                 int[] hvn = new int[count];
@@ -1459,7 +1459,5 @@ namespace lottery
             dataGridView3.ClearSelection();
             listBox2.Items.Clear();
         }
-
-
     }
 }
