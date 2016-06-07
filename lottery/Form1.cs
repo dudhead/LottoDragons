@@ -420,9 +420,7 @@ namespace lottery
 
                     while (dr3.Read())
                     {
-                        string dd = dr3[0].ToString().Substring(0, 11);
-                        dataGridView3.Rows.Add(dd, dr3[1].ToString(), dr3[2].ToString());
-
+                        dataGridView3.Rows.Add(DateTime.Parse(dr3[0].ToString()).Date.ToString("MM/dd/yyyy"), dr3[1].ToString(), dr3[2].ToString());
                     }
                     dr3.Close();
 
@@ -926,11 +924,11 @@ namespace lottery
                                     }
                                 }
                                 listBox1.Items.Clear();
-                                for (int i = 0; array1[i] != -1; i++)
+                                for (int i = 0; array1.Length < i && array1[i] != -1; i++)
                                 {
-                                    for (int j = 0; array2[j] != -1; j++)
+                                    for (int j = 0; array2.Length<j && array2[j] != -1; j++)
                                     {
-                                        for (int k = 0; array3[k] != -1; k++)
+                                        for (int k = 0; array3.Length>k && array3[k] != -1; k++)
                                         {
                                             String result = array1[i].ToString() + " " + array2[j].ToString() + " " + array3[k].ToString() + " ";
                                             listBox1.Items.Add(result);
