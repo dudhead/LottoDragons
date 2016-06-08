@@ -17,7 +17,7 @@ namespace lottery
     public partial class Form1 : Form
     {
         ListBox lb = new ListBox();
-        Boolean debug = false;
+        Boolean debug = true;
         OleDbConnection conn =null;
         String realDBPath = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Application.StartupPath + "\\lottery.accdb;Persist Security Info=False;";
         String debugDBPath = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Karthik\\Documents\\LottoDragons\\lottery.accdb;Persist Security Info=False;";
@@ -978,9 +978,8 @@ namespace lottery
 
                         while (dr4.Read())
                         {
-                            string dd = dr4[0].ToString().Substring(0, 11);
                             string ddd = dr4[2] + " - " + dr4[3] + " - " + dr4[4] + " - " + dr4[5] + " - " + dr4[6];
-                            dataGridView3.Rows.Add(dd, dr4[1], ddd);
+                            dataGridView3.Rows.Add(DateTime.Parse(dr4[0].ToString()).Date.ToString("MM/dd/yyyy"), dr4[1], ddd);
                         }
                         dr4.Close();
                         while (dr.Read())
@@ -991,7 +990,7 @@ namespace lottery
                             array[count, 3] = Convert.ToInt32(dr[6]);
                             array[count, 4] = Convert.ToInt32(dr[7]);
                             int currentMaxValue = Convert.ToInt32(dr[1]);
-                         
+
                             count++;
                             max = (max < currentMaxValue) ? currentMaxValue : max;
                         }
@@ -1142,6 +1141,10 @@ namespace lottery
                         {
                             error_lbl.Text = "Not enough values to calculate please insert and try again";
                         }
+                    }
+                    else
+                    {
+                        error_lbl.Text = "No Rows Inserted";
                     }
                 }
             }
